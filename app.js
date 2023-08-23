@@ -5,12 +5,12 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routes/index');
 // const { PORT = 3003 } = process.env;
 const { PORT = 3000 } = process.env;
-const { cors } = require('./middlewares/cors');
-const { errorMiddleware } = require('./middlewares/error');
+const cors = require('./middlewares/cors');
+const errorHandler = require('./middlewares/error');
 
 const app = express();
 
-mongoose.connect('mongodb://127.0.0.1:27017/mestodb')
+mongoose.connect('mongodb://127.0.0.1:27017/bitfilmsdb')
   .then(() => {
     console.log('Connected!');
   })
@@ -35,7 +35,7 @@ app.use(errorLogger); // подключаем логгер ошибок
 
 app.use(errors()); // обработчик ошибок celebrate
 
-app.use(errorMiddleware);
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log('Запуск сервера');
