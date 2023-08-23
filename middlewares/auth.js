@@ -1,12 +1,12 @@
 const jwt = require('jsonwebtoken');
-const { UnauthorizedError } = require('../errors/unauthorized');
+const { Unauthorized } = require('../errors/unauthorized');
 const { JWT_SECRET } = require('../envConfig');
 
 const authMiddleware = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith('Bearer')) {
-    throw new UnauthorizedError('Необходима авторизация');
+    throw new Unauthorized('Необходима авторизация');
   }
   const token = authorization.replace('Bearer ', '');
 
@@ -15,7 +15,7 @@ const authMiddleware = (req, res, next) => {
   try {
     payload = jwt.verify(token, JWT_SECRET);
   } catch (err) {
-    throw new UnauthorizedError('Необходима авторизация');
+    throw new Unauthorized('Необходима авторизация');
   }
 
   req.user = payload;
