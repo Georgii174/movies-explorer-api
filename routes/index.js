@@ -11,10 +11,10 @@ router.post('/signup', createUserValidator, createUser);
 
 router.use(auth);
 
-router.use('/', userRouter);
-router.use('/', movieRouter);
+router.use('/users', auth, userRouter);
+router.use('/movies', auth, movieRouter);
 
-router.use('*', (req, res, next) => {
+router.use('*', auth, (req, res, next) => {
   next(new NotFound('Страница не найдена'));
 });
 
